@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grandezas e Proporcionalidade — Aula interativa · 7º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Karla:wght@400;600;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pedra:#F1F0EA;        /* fundo calcário */
+  --marmore:#FFFFFF;
+  --tinta:#1B2A33;        /* ardósia */
+  --grafite:#6B7C86;
+  --azulejo:#1E6FA8;      /* azul de medida */
+  --azulejo-claro:#DDEBF6;
+  --ouro:#D4A017;         /* proporção áurea */
+  --ouro-claro:#FBF0D2;
+  --rubi:#B32B4C;         /* quando NÃO é proporcional */
+  --rubi-claro:#FADDE3;
+  --verde:#2E7D5B;
+  --verde-claro:#DDF0E7;
+  --regua:rgba(27,42,51,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--pedra);color:var(--tinta);
+  font-family:"Karla",system-ui,sans-serif;font-size:17px;line-height:1.62;
+}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px 90px}
+h1,h2,h3,.disp{font-family:"Fraunces",Georgia,serif;font-weight:900;letter-spacing:-.01em}
+.mono{font-family:"IBM Plex Mono",monospace}
+
+/* ---------- capa ---------- */
+header.capa{padding:54px 0 22px;position:relative}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;color:var(--azulejo);font-weight:600}
+h1{font-size:clamp(2.4rem,8vw,4.2rem);line-height:1;margin:.12em 0 .2em}
+h1 em{font-style:italic;color:var(--ouro)}
+.capa p{max-width:560px;color:var(--grafite);margin:0}
+.colunas{display:flex;gap:6px;align-items:flex-end;height:60px;margin-top:26px}
+.colunas i{display:block;flex:1;background:var(--azulejo);border-radius:3px 3px 0 0;opacity:.85}
+
+/* ---------- régua de navegação ---------- */
+nav.regua{position:sticky;top:0;z-index:40;background:rgba(241,240,234,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--regua);margin-bottom:30px}
+.regua-inner{max-width:960px;margin:0 auto;padding:9px 12px;display:flex;gap:6px;overflow-x:auto}
+.regua a{flex:0 0 auto;text-decoration:none;color:var(--tinta);font-size:.8rem;font-weight:600;padding:5px 12px;border-radius:4px;border:1px solid var(--regua);background:var(--marmore);white-space:nowrap}
+.regua a:hover{background:var(--ouro-claro);border-color:var(--ouro)}
+.regua a b{font-family:"IBM Plex Mono",monospace;color:var(--azulejo);margin-right:6px}
+
+/* ---------- seções ---------- */
+section.etapa{margin:0 0 58px;scroll-margin-top:70px}
+.etapa-topo{display:flex;gap:14px;align-items:baseline;border-top:3px solid var(--tinta);padding-top:12px;margin-bottom:14px}
+.etapa-topo .marca{font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;color:var(--marmore);background:var(--tinta);padding:3px 9px;border-radius:3px;flex:0 0 auto}
+h2{font-size:clamp(1.45rem,4.4vw,2rem);margin:0;line-height:1.15}
+h3{font-size:1.1rem;margin:24px 0 6px}
+p{margin:.7em 0}
+
+.card{background:var(--marmore);border:1px solid var(--regua);border-radius:8px;padding:20px;margin:18px 0;box-shadow:0 1px 0 rgba(27,42,51,.06)}
+.card h4{margin:0 0 4px;font-family:"Fraunces",serif;font-weight:900;font-size:1.02rem}
+.card .legenda{margin:0 0 14px;font-size:.9rem;color:var(--grafite)}
+
+.nota{border-left:4px solid var(--azulejo);background:var(--azulejo-claro);padding:11px 15px;border-radius:0 6px 6px 0;margin:15px 0}
+.nota.ouro{border-color:var(--ouro);background:var(--ouro-claro)}
+.nota.rubi{border-color:var(--rubi);background:var(--rubi-claro)}
+.nota.verde{border-color:var(--verde);background:var(--verde-claro)}
+.nota strong{font-family:"Fraunces",serif}
+
+.formula{font-family:"IBM Plex Mono",monospace;font-weight:600;background:var(--tinta);color:var(--pedra);display:inline-block;padding:4px 12px;border-radius:5px;font-size:1.05rem}
+
+/* balões de diálogo do livro */
+.balao{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.fala{flex:1 1 240px;border-radius:10px;padding:11px 15px;font-size:.95rem}
+.fala.a{background:var(--verde-claro);border:1px solid var(--verde)}
+.fala.b{background:var(--rubi-claro);border:1px solid var(--rubi)}
+.fala b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px;opacity:.75}
+
+/* passos */
+.passos{counter-reset:p;list-style:none;padding:0;margin:14px 0}
+.passos li{counter-increment:p;position:relative;padding:8px 0 8px 44px;border-bottom:1px dotted var(--regua)}
+.passos li:last-child{border-bottom:none}
+.passos li::before{content:counter(p);position:absolute;left:0;top:9px;width:28px;height:28px;border-radius:4px;background:var(--ouro);color:var(--tinta);display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.82rem}
+
+/* tabelas */
+table{border-collapse:collapse;width:100%;max-width:460px;font-family:"IBM Plex Mono",monospace;font-size:.95rem}
+th,td{border:1px solid var(--regua);padding:7px 10px;text-align:center}
+th{background:var(--verde-claro);font-weight:600;font-family:"Karla",sans-serif}
+td.k{background:var(--ouro-claro);font-weight:600}
+tr.novo td{background:var(--azulejo-claro)}
+
+/* controles */
+.controles{display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-bottom:12px}
+.ctrl{display:flex;flex-direction:column;gap:3px;min-width:190px;flex:1}
+.ctrl label{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grafite)}
+input[type=range]{width:100%;accent-color:var(--azulejo);height:24px}
+.valor{color:var(--azulejo);font-weight:600}
+.btn{font-family:"Karla",sans-serif;font-weight:800;border:1px solid var(--tinta);background:var(--marmore);color:var(--tinta);border-radius:5px;padding:8px 16px;cursor:pointer}
+.btn:hover{background:var(--ouro-claro)}
+.btn.forte{background:var(--tinta);color:var(--pedra)}
+.btn.forte:hover{background:#0f1b22}
+.btn.mini{padding:4px 11px;font-size:.85rem;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}
+.chip{border:1px solid var(--regua);background:var(--marmore);border-radius:20px;padding:5px 14px;cursor:pointer;font-weight:600;font-size:.88rem;font-family:"Karla",sans-serif}
+.chip.sel{background:var(--tinta);color:var(--pedra);border-color:var(--tinta)}
+.entrada{font-family:"IBM Plex Mono",monospace;font-weight:600;border:1px solid var(--tinta);border-radius:5px;padding:6px 8px;width:88px;text-align:center;background:var(--marmore);color:var(--tinta);font-size:1rem}
+:focus-visible{outline:3px solid var(--ouro);outline-offset:2px}
+
+.saida{font-family:"IBM Plex Mono",monospace;font-size:.93rem;background:var(--tinta);color:var(--pedra);border-radius:7px;padding:13px 16px;margin-top:14px;line-height:1.85}
+.saida b.ok{color:var(--ouro)}
+.saida b.no{color:#FF9AAE}
+
+/* esquema de setas (assinatura) */
+.esquema{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;align-items:center;font-family:"IBM Plex Mono",monospace;margin:6px 0}
+.esquema .rot{font-size:.8rem;color:var(--grafite);text-align:right}
+.trilha{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cx{border:1px solid var(--tinta);background:var(--ouro-claro);border-radius:5px;padding:6px 12px;font-weight:600;min-width:64px;text-align:center}
+.cx.uni{background:var(--verde-claro)}
+.cx.fim{background:var(--azulejo);color:#fff;border-color:var(--azulejo)}
+.seta{display:flex;flex-direction:column;align-items:center;color:var(--azulejo);font-size:.78rem;font-weight:600}
+.seta span{line-height:1}
+.seta i{display:block;width:40px;height:0;border-top:2px solid var(--azulejo);position:relative}
+.seta i::after{content:"";position:absolute;right:-1px;top:-4px;border-left:7px solid var(--azulejo);border-top:4px solid transparent;border-bottom:4px solid transparent}
+
+/* gráfico */
+.gcaixa{background:var(--marmore);border:1px solid var(--regua);border-radius:8px;padding:10px}
+svg.plot{width:100%;height:auto;display:block}
+.linha-grade{stroke:var(--regua);stroke-width:1}
+.eixo{stroke:var(--tinta);stroke-width:2}
+.serie-a{stroke:var(--azulejo)}
+.serie-b{stroke:var(--rubi)}
+.serie-c{stroke:var(--verde)}
+.pt-a{fill:var(--azulejo)}.pt-b{fill:var(--rubi)}.pt-c{fill:var(--verde)}
+.legendas{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;margin-top:8px}
+.legendas label{display:flex;align-items:center;gap:6px;cursor:pointer}
+.pill{width:26px;height:4px;border-radius:2px;display:inline-block}
+
+/* quiz */
+.quiz-capa{border:2px solid var(--tinta);border-radius:10px;background:var(--tinta);color:var(--pedra);padding:24px;margin-bottom:18px}
+.quiz-capa h2{color:var(--pedra);margin-bottom:6px}
+.quiz-capa p{margin:0;opacity:.85}
+.progresso{height:8px;border:1px solid var(--regua);border-radius:20px;background:var(--marmore);overflow:hidden;margin:14px 0 22px;position:sticky;top:52px;z-index:30}
+.progresso i{display:block;height:100%;width:0;background:var(--ouro);transition:width .3s}
+.q{background:var(--marmore);border:1px solid var(--regua);border-radius:8px;padding:18px 20px;margin-bottom:14px}
+.q .qnum{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grafite)}
+.q .enunciado{font-weight:800;margin:5px 0 12px}
+.ops{display:grid;gap:7px}
+.op{text-align:left;border:1px solid var(--regua);background:var(--marmore);border-radius:6px;padding:9px 13px;cursor:pointer;font-size:.99rem;font-family:"Karla",sans-serif;font-weight:600;display:flex;gap:10px;align-items:center}
+.op:hover:not(:disabled){background:var(--ouro-claro)}
+.op .letra{font-family:"IBM Plex Mono",monospace;width:22px;height:22px;border-radius:4px;border:1px solid var(--regua);display:grid;place-items:center;font-size:.75rem;flex:0 0 auto}
+.op.certo{background:var(--verde-claro);border-color:var(--verde)}
+.op.errado{background:var(--rubi-claro);border-color:var(--rubi)}
+.op:disabled{cursor:default}
+.livre{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fb{margin-top:11px;font-size:.94rem;border-radius:6px;padding:10px 14px;display:none}
+.fb.on{display:block}
+.fb.bom{background:var(--verde-claro);border-left:4px solid var(--verde)}
+.fb.ruim{background:var(--rubi-claro);border-left:4px solid var(--rubi)}
+.placar{border:2px solid var(--ouro);background:var(--ouro-claro);border-radius:10px;padding:26px;text-align:center;display:none}
+.placar.on{display:block}
+.placar .nota{font-family:"Fraunces",serif;font-weight:900;font-size:3.2rem;line-height:1}
+footer{text-align:center;color:var(--grafite);font-size:.84rem;padding:26px 0 0;border-top:1px solid var(--regua);margin-top:36px}
+@media(max-width:560px){body{font-size:16px}.card{padding:15px}.esquema{grid-template-columns:1fr}.esquema .rot{text-align:left}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<nav class="regua">
+  <div class="regua-inner">
+    <a href="#e1"><b>1</b>O que é grandeza</a>
+    <a href="#e2"><b>2</b>Relacionadas ou não</a>
+    <a href="#e3"><b>3</b>A função que liga</a>
+    <a href="#e4"><b>4</b>Diretamente proporcionais</a>
+    <a href="#quiz">★ Questionário</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header class="capa">
+  <div class="eyebrow">Capítulo 8 · Matemática · 7º ano</div>
+  <h1>Grandezas e <em>proporcionalidade</em></h1>
+  <p>Os gregos construíram o Partenon usando proporção: cada medida combinava com as outras. Aqui você vai aprender a enxergar essa mesma lógica em receitas, viagens, remédios e contas do dia a dia.</p>
+  <div class="colunas" id="colunas"></div>
+</header>
+
+<!-- ===== 1 ===== -->
+<section class="etapa" id="e1">
+  <div class="etapa-topo"><span class="marca">01</span><h2>O que é uma grandeza</h2></div>
+  <p><strong>Grandeza é tudo aquilo que pode ser medido.</strong> Se dá para responder "quanto?" com um número e uma unidade, você está diante de uma grandeza.</p>
+
+  <div class="card">
+    <h4>É grandeza ou não é?</h4>
+    <p class="legenda">Clique para ver a resposta de cada item.</p>
+    <div class="chips" id="grChips"></div>
+    <div class="saida" id="grSaida">Escolha um item acima.</div>
+  </div>
+
+  <div class="nota ouro"><strong>Vale lembrar:</strong> tempo, distância, massa, volume, temperatura e até dinheiro são grandezas. Já "beleza", "medo" ou "cor favorita" não são — não existe unidade para medi-los.</div>
+</section>
+
+<!-- ===== 2 ===== -->
+<section class="etapa" id="e2">
+  <div class="etapa-topo"><span class="marca">02</span><h2>Duas grandezas: relacionadas ou não</h2></div>
+  <p>Quando <strong>mexer em uma faz a outra mudar de forma previsível</strong>, dizemos que elas estão <strong>relacionadas</strong>. Quando não há ligação nenhuma, elas simplesmente não se relacionam.</p>
+
+  <div class="card">
+    <h4>Rafael, o ciclista</h4>
+    <p class="legenda">Ele percorre 28 km em 2 horas e mantém o ritmo.</p>
+    <p>Se em 2 horas ele faz 28 km, em <strong>1 hora</strong> faz 14 km. Quando o tempo dobra, a distância dobra; quando triplica, triplica.</p>
+    <table>
+      <tr><th>Tempo (h)</th><th>Distância (km)</th></tr>
+      <tr><td>1</td><td>14</td></tr><tr><td>2</td><td>28</td></tr>
+      <tr><td>3</td><td>42</td></tr><tr><td>4</td><td>56</td></tr>
+      <tr class="novo"><td>5</td><td>70</td></tr>
+    </table>
+    <p style="margin-bottom:0">Em 5 horas: 5 · 14 = <strong>70 km</strong>. Tempo e distância estão relacionados.</p>
+  </div>
+
+  <div class="card">
+    <h4>Cláudia, a resfriada</h4>
+    <p class="legenda">Ela deu 6 espirros em 1 minuto. Quantos dará nos próximos 5 minutos?</p>
+    <div class="balao">
+      <div class="fala b"><b>a resposta errada</b>5 · 6 = 30 espirros.</div>
+      <div class="fala a"><b>a resposta certa</b>Não dá para saber. Ela pode tomar um remédio e parar de espirrar, ou espirrar 20 vezes seguidas.</div>
+    </div>
+    <p style="margin-bottom:0">Aqui o tempo e o número de espirros <strong>não estão relacionados</strong>. Sem relação, nenhum cálculo matemático resolve.</p>
+  </div>
+
+  <div class="nota rubi"><strong>O teste rápido:</strong> antes de multiplicar qualquer coisa, pergunte "existe mesmo uma regra ligando as duas grandezas?". Se a resposta for "depende", não dá para calcular.</div>
+</section>
+
+<!-- ===== 3 ===== -->
+<section class="etapa" id="e3">
+  <div class="etapa-topo"><span class="marca">03</span><h2>A função que liga as duas grandezas</h2></div>
+  <p>Quando existe relação, dá para escrever uma <strong>fórmula</strong> que transforma uma grandeza na outra. Chamamos de <strong>x</strong> a grandeza que escolhemos e de <strong>y</strong> a que aparece como resultado.</p>
+
+  <div class="card">
+    <h4>O soro na veia</h4>
+    <p class="legenda">A enfermeira regulou o equipamento para 25 gotas por minuto.</p>
+    <table>
+      <tr><th>Tempo (min) · x</th><th>Gotas · y</th></tr>
+      <tr><td>1</td><td>25</td></tr><tr><td>2</td><td>50</td></tr>
+      <tr><td>3</td><td>75</td></tr><tr><td>4</td><td>100</td></tr>
+      <tr><td>5</td><td>125</td></tr>
+    </table>
+    <div class="esquema" style="margin-top:14px">
+      <div class="rot">a máquina:</div>
+      <div class="trilha">
+        <div class="cx">x<br><span style="font-size:.72rem;font-weight:400">minutos</span></div>
+        <div class="seta"><span>× 25</span><i></i></div>
+        <div class="cx fim">y<br><span style="font-size:.72rem;font-weight:400">gotas</span></div>
+      </div>
+    </div>
+    <p style="margin-bottom:0">A função é <span class="formula">y = 25 · x</span> — cada minuto que passa acrescenta 25 gotas.</p>
+  </div>
+
+  <ol class="passos">
+    <li>Descubra <strong>quanto vale y quando x = 1</strong>. Esse número é a "receita" da relação.</li>
+    <li>Escreva a fórmula <strong>y = (esse número) · x</strong>.</li>
+    <li>Teste com um valor da tabela para conferir se bate.</li>
+    <li>Use a fórmula para descobrir qualquer outro valor.</li>
+  </ol>
+
+  </section>
+
+<!-- ===== 4 ===== -->
+<section class="etapa" id="e4">
+  <div class="etapa-topo"><span class="marca">04</span><h2>Grandezas diretamente proporcionais</h2></div>
+  <p>Esse é o tipo de relação mais organizado que existe: <strong>quando uma dobra, a outra dobra; quando uma triplica, a outra triplica; quando uma cai pela metade, a outra também cai.</strong> Duas grandezas assim são <strong>diretamente proporcionais</strong>.</p>
+
+  <div class="nota"><strong>Como testar em 3 passos:</strong> 1) divida y por x em cada linha da tabela; 2) se o resultado for <em>sempre o mesmo</em>, são diretamente proporcionais; 3) se em alguma linha der diferente, não são.</div>
+
+  <div class="card">
+    <h4>Detector de proporcionalidade</h4>
+    <p class="legenda">Escolha uma tabela e teste linha por linha.</p>
+    <div class="chips" id="detChips"></div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+      <table id="detTab"></table>
+      <div style="flex:1;min-width:230px">
+        <button class="btn forte" id="detBtn">Testar y ÷ x</button>
+        <div class="saida" id="detSaida">Clique em testar para ver as divisões.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUIZ ===== -->
+<section class="etapa" id="quiz">
+  <div class="quiz-capa">
+    <div class="eyebrow" style="color:var(--ouro)">Questionário final</div>
+    <h2>11 questões sobre tudo o que vimos</h2>
+    <p>Cada resposta vem com a explicação na hora. No fim, sua nota e o que revisar.</p>
+  </div>
+  <div class="progresso"><i id="barra"></i></div>
+  <div id="listaQ"></div>
+  <div style="text-align:center;margin:20px 0;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <button class="btn forte" id="btnResultado">Ver meu resultado</button>
+    <button class="btn" id="btnRefazer">Refazer do zero</button>
+  </div>
+  <div class="placar" id="placar"></div>
+</section>
+
+<footer>Aula interativa · conteúdo adaptado do Capítulo 8 — Grandezas e Proporcionalidade.</footer>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const fmt=n=>{
+  if(!isFinite(n))return "—";
+  const r=Math.round(n*1000)/1000;
+  return r.toLocaleString("pt-BR",{maximumFractionDigits:3});
+};
+
+/* colunas decorativas da capa (proporção crescente) */
+(()=>{const c=$("#colunas");[.45,.6,.75,.9,1,.9,.75,.6,.45].forEach(h=>{const i=document.createElement("i");i.style.height=(h*100)+"%";c.appendChild(i);});})();
+
+/* ================= 1 · é grandeza? ================= */
+const itens=[
+ ["Altura de uma porta",1,"Mede-se em metros. É grandeza."],
+ ["Sabor do sorvete",0,"Não existe unidade de sabor. Não é grandeza."],
+ ["Tempo de um filme",1,"Mede-se em minutos. É grandeza."],
+ ["Dinheiro na carteira",1,"Quantias em dinheiro também são grandezas."],
+ ["Medo de altura",0,"Sentimento não se mede com número e unidade."],
+ ["Massa de uma mochila",1,"Mede-se em quilogramas. É grandeza."],
+ ["Cor preferida",0,"Cor não tem quantidade. Não é grandeza."],
+ ["Volume de suco",1,"Mede-se em litros ou mililitros. É grandeza."]
+];
+const gc=$("#grChips");
+itens.forEach(([nome,ok,exp])=>{
+  const b=document.createElement("button");b.className="chip";b.textContent=nome;
+  b.onclick=()=>{
+    gc.querySelectorAll(".chip").forEach(c=>c.classList.remove("sel"));b.classList.add("sel");
+    $("#grSaida").innerHTML=`${nome}: <b class="${ok?"ok":"no"}">${ok?"É GRANDEZA":"NÃO É GRANDEZA"}</b><br>${exp}`;
+  };
+  gc.appendChild(b);
+});
+
+/* ================= 4 · detector ================= */
+const tabelas=[
+ {nome:"Ônibus",x:"Tempo (h)",y:"Distância (km)",d:[[1,90],[2,180],[3,270]]},
+ {nome:"Suco e água",x:"Água (L)",y:"Suco (mL)",d:[[1,200],[5,1000],[10,2000]]},
+ {nome:"Perímetro do quadrado",x:"Lado (m)",y:"Perímetro (m)",d:[[10,40],[20,80],[30,120]]},
+ {nome:"Área do quadrado",x:"Lado (m)",y:"Área (m²)",d:[[10,100],[20,400],[30,900]]},
+ {nome:"y = 2x + 1",x:"x",y:"y",d:[[1,3],[2,5],[3,7]]},
+ {nome:"Idade e altura",x:"Idade (anos)",y:"Altura (cm)",d:[[5,110],[10,140],[15,168]]}
+];
+let det=0;
+const dc=$("#detChips");
+tabelas.forEach((t,i)=>{
+  const b=document.createElement("button");b.className="chip"+(i===0?" sel":"");b.textContent=t.nome;
+  b.onclick=()=>{det=i;dc.querySelectorAll(".chip").forEach(c=>c.classList.remove("sel"));b.classList.add("sel");mostraDet();};
+  dc.appendChild(b);
+});
+function mostraDet(){
+  const t=tabelas[det];
+  $("#detTab").innerHTML=`<tr><th>${t.x}</th><th>${t.y}</th></tr>`+t.d.map(([a,b])=>`<tr><td>${fmt(a)}</td><td>${fmt(b)}</td></tr>`).join("");
+  $("#detSaida").innerHTML="Clique em testar para ver as divisões.";
+}
+$("#detBtn").onclick=()=>{
+  const t=tabelas[det];
+  const ks=t.d.map(([a,b])=>b/a);
+  const igual=ks.every(v=>Math.abs(v-ks[0])<1e-9);
+  let s=t.d.map(([a,b],i)=>`Linha ${i+1}: ${fmt(b)} ÷ ${fmt(a)} = <b>${fmt(ks[i])}</b>`).join("<br>");
+  s+=igual
+    ? `<br><b class="ok">SIM, são diretamente proporcionais.</b> O resultado deu sempre ${fmt(ks[0])}, então y = ${fmt(ks[0])} · x.`
+    : `<br><b class="no">NÃO são diretamente proporcionais.</b> As divisões deram resultados diferentes, então não existe um número fixo ligando as duas grandezas.`;
+  $("#detSaida").innerHTML=s;
+};
+mostraDet();
+
+/* ================= QUESTIONÁRIO ================= */
+const questoes=[
+ {t:"mc",p:"O que é uma grandeza, em matemática?",
+  o:["Qualquer número maior que zero","Tudo aquilo que pode ser medido","Uma conta de multiplicação","Uma tabela com duas colunas"],c:1,
+  e:"Grandeza é tudo o que podemos medir: tempo, distância, massa, volume e até quantias em dinheiro."},
+ {t:"mc",p:"Qual destes NÃO é uma grandeza?",
+  o:["Temperatura de uma sala","Distância entre duas cidades","Simpatia de uma pessoa","Volume de um copo"],c:2,
+  e:"Simpatia não tem número nem unidade de medida, então não é grandeza."},
+ {t:"mc",p:"Cláudia deu 6 espirros em 1 minuto. Quantos espirros ela dará em 5 minutos?",
+  o:["30 espirros","Não é possível saber","6 espirros","11 espirros"],c:1,
+  e:"Tempo e número de espirros não são grandezas relacionadas. Ela pode tomar um remédio e parar. Sem relação, não há cálculo possível."},
+ {t:"mc",p:"Rafael percorre 28 km em 2 horas mantendo a velocidade. Quantos km ele faz em 5 horas?",
+  o:["56 km","62 km","70 km","140 km"],c:2,
+  e:"Em 1 hora ele faz 28 ÷ 2 = 14 km. Em 5 horas: 5 · 14 = 70 km."},
+ {t:"txt",p:"Um trem-bala percorre 200 km em 1,5 h. Mantendo a velocidade, quantos km ele faz em 3 horas? (Só o número)",a:["400","400 km","400km"],
+  e:"3 horas é o dobro de 1,5 h. Se o tempo dobra, a distância dobra: 200 · 2 = 400 km."},
+ {t:"mc",p:"A enfermeira regulou o soro em 25 gotas por minuto. Qual função relaciona o tempo x com as gotas y?",
+  o:["y = x + 25","y = 25 · x","y = x ÷ 25","y = 25"],c:1,
+  e:"Cada minuto acrescenta 25 gotas, então y = 25 · x. Em 4 minutos: 25 · 4 = 100 gotas."},
+ {t:"mc",p:"Duas grandezas são diretamente proporcionais quando:",
+  o:["Uma aumenta e a outra diminui na mesma medida","Quando uma dobra, a outra também dobra","Elas têm a mesma unidade de medida","A soma delas é sempre a mesma"],c:1,
+  e:"Na proporcionalidade direta as duas crescem juntas na mesma proporção: dobra/dobra, triplica/triplica."},
+ {t:"mc",p:"Qual é o teste mais seguro para saber se x e y são diretamente proporcionais?",
+  o:["Somar x com y em cada linha","Ver se os números são pares","Dividir y por x em cada linha e ver se dá sempre o mesmo","Ver qual coluna tem números maiores"],c:2,
+  e:"Se y ÷ x resulta sempre no mesmo número (a constante k), são diretamente proporcionais."},
+ {t:"mc",p:"Um automóvel faz 12 km com 1 litro. Com o tanque cheio de 41 litros, quantos km ele percorre?",
+  o:["402 km","492 km","480 km","53 km"],c:1,
+  e:"É proporcional: 12 · 41 = 492 km."},
+ {t:"txt",p:"O rótulo indica 200 mL de suco concentrado para cada 1 litro de água. Quantos mL de suco para 10 L de água? (Só o número)",a:["2000","2 000","2000 ml","2000ml"],
+  e:"Multiplicando a água por 10, o suco também é multiplicado por 10: 200 · 10 = 2 000 mL, ou seja, 2 litros."},
+ {t:"txt",p:"Numa montadora, o número de homens está para o de mulheres na proporção de 3 para 1. Se há 600 mulheres, quantos homens há? (Só o número)",a:["1800","1 800"],
+  e:"Para cada 1 mulher há 3 homens: 600 · 3 = 1 800 homens."}
+];
+
+const resp=new Array(questoes.length).fill(null);
+const norm=s=>s.toLowerCase().replace(/\s+/g," ").trim();
+function montaQuiz(){
+  const lista=$("#listaQ");lista.innerHTML="";
+  questoes.forEach((q,i)=>{
+    const d=document.createElement("div");d.className="q";
+    let h=`<div class="qnum">Questão ${i+1} de ${questoes.length}</div><div class="enunciado">${q.p}</div>`;
+    if(q.t==="mc")h+=`<div class="ops">`+q.o.map((o,j)=>`<button class="op" data-i="${i}" data-j="${j}"><span class="letra">${"ABCD"[j]}</span><span>${o}</span></button>`).join("")+`</div>`;
+    else h+=`<div class="livre"><input class="entrada" style="width:150px" type="text" id="t${i}" placeholder="sua resposta" aria-label="resposta"><button class="btn mini" data-t="${i}">Responder</button></div>`;
+    h+=`<div class="fb" id="f${i}"></div>`;
+    d.innerHTML=h;lista.appendChild(d);
+  });
+  lista.querySelectorAll(".op").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i,j=+b.dataset.j,q=questoes[i];
+    if(resp[i]!==null)return;
+    resp[i]=(j===q.c);
+    const bl=b.closest(".q");
+    bl.querySelectorAll(".op").forEach((o,k)=>{o.disabled=true;if(k===q.c)o.classList.add("certo");else if(k===j)o.classList.add("errado");});
+    const f=bl.querySelector(".fb");
+    f.className="fb on "+(j===q.c?"bom":"ruim");
+    f.innerHTML=(j===q.c?"<strong>Correto.</strong> ":"<strong>Quase.</strong> ")+q.e;
+    barra();
+  });
+  lista.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.t,q=questoes[i];
+    if(resp[i]!==null)return;
+    const v=norm($("#t"+i).value||"");if(!v)return;
+    const ok=q.a.some(a=>norm(a)===v);
+    resp[i]=ok;
+    const f=$("#f"+i);
+    f.className="fb on "+(ok?"bom":"ruim");
+    f.innerHTML=(ok?"<strong>Correto.</strong> ":`<strong>Quase.</strong> A resposta é <strong>${q.a[0]}</strong>. `)+q.e;
+    $("#t"+i).disabled=true;b.disabled=true;barra();
+  });
+  barra();
+}
+function barra(){$("#barra").style.width=(resp.filter(r=>r!==null).length/questoes.length*100)+"%";}
+$("#btnResultado").onclick=()=>{
+  const feitas=resp.filter(r=>r!==null).length,acertos=resp.filter(r=>r===true).length;
+  let msg;
+  if(feitas<questoes.length)msg=`Faltam <strong>${questoes.length-feitas}</strong> questões. Responda todas antes de fechar a nota.`;
+  else if(acertos>=10)msg="Domínio total. Você identifica grandezas, sabe quando elas se relacionam e reconhece a proporcionalidade direta.";
+  else if(acertos>=7)msg="Bom resultado. Revise a etapa 4 — o teste y ÷ x — e tente de novo.";
+  else msg="Volte nas etapas 2, 3 e 4, brinque com o detector de proporcionalidade e refaça o questionário.";
+  const p=$("#placar");
+  p.innerHTML=`<div class="eyebrow">Seu resultado</div><div class="nota">${acertos}/${questoes.length}</div><p style="margin:10px 0 0">${msg}</p>`;
+  p.classList.add("on");p.scrollIntoView({block:"center"});
+};
+$("#btnRefazer").onclick=()=>{resp.fill(null);$("#placar").classList.remove("on");montaQuiz();$("#quiz").scrollIntoView();};
+montaQuiz();
+</script>
+</body>
+</html>
